@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject laserPrefab;
+
+    public float fireRate = 0.25f;
+    public float canFire = 0.25f;
+    
     [SerializeField]
     private float speed = 5.0f; 
     // Start is called before the first frame update
@@ -16,6 +21,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
+        
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        {
+            //Cooling system
+            if (Time.time > canFire)
+            {
+                //Cpawning laser
+                Instantiate(laserPrefab, transform.position + new Vector3(0, 0.88f, 0), Quaternion.identity);
+                canFire = Time.time + fireRate;
+            }
+            
+            
+        }
     }
     private void Movement()
     {
