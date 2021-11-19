@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool canTripleShot = false;
-    
+    public bool isSpeedBoostActive = false;
     [SerializeField]
     private GameObject _laserPrefab;
     
@@ -40,8 +40,17 @@ public class Player : MonoBehaviour
     {
         float horizeontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * _speed * horizeontalInput * Time.deltaTime);
-        transform.Translate(Vector3.up * _speed * verticalInput * Time.deltaTime);
+        if (isSpeedBoostActive == true)
+        {
+            transform.Translate(Vector3.right * _speed * 2f * horizeontalInput * Time.deltaTime);
+            transform.Translate(Vector3.up * _speed * 2f * verticalInput * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(Vector3.right * _speed * horizeontalInput * Time.deltaTime);
+            transform.Translate(Vector3.up * _speed * verticalInput * Time.deltaTime);
+        }
+
         if (transform.position.y > 0)
         {
             transform.position = new Vector3(transform.position.x, 0, 0);
@@ -84,10 +93,24 @@ public class Player : MonoBehaviour
         canTripleShot = true;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
-
+    
     public IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
         canTripleShot = false;
     }
+    
+    public void SpeedBoostPowerupOn()
+    {
+        isSpeedBoostActive = true;
+        StartCoroutine(SpeedBoostPowerDownRoutine());
+    }
+    
+    public IEnumerator SpeedBoostPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        isSpeedBoostActive = false;
+    }
+
+
 }
