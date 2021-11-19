@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public bool canTripleShot = false;
     public bool isSpeedBoostActive = false;
+    public int lives = 3;
     [SerializeField]
     private GameObject _laserPrefab;
     
@@ -88,6 +89,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Damage()
+    {
+        if (lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
+        lives--;
+    }
+
     public void TripleShotPowerupOn()
     {
         canTripleShot = true;
@@ -111,6 +121,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         isSpeedBoostActive = false;
     }
+    
 
 
 }
