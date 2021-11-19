@@ -21,11 +21,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 5.0f;
 
+    [SerializeField] private UiManager _uiManager;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _uiManager = GameObject.Find("Canvas").GetComponent<UiManager>();
+        if (_uiManager != null)
+        {
+            _uiManager.UpdateLives(lives);
+        }
     }
 
     // Update is called once per frame
@@ -91,11 +97,20 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (lives < 1)
-        {
-            Destroy(this.gameObject);
-        }
+
         lives--;
+        if (_uiManager != null)
+        {
+            if (lives < 1)
+            {
+                _uiManager.UpdateLives(lives);
+                Destroy(this.gameObject);
+                Time.timeScale = 0;
+                
+            }
+            _uiManager.UpdateLives(lives);
+        }
+        
     }
 
     public void TripleShotPowerupOn()
@@ -121,6 +136,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         isSpeedBoostActive = false;
     }
+    
     
 
 
